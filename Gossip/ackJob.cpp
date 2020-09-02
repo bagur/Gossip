@@ -22,6 +22,9 @@ ackJob::processJob() {
     
     p_server_state->processNewStateList(syn.gossip_info_list, new_list_peer);
     
-    
+    json        j_msg   = syn;
+    if (!sendData(syn.getSenderIPAddr(), syn.getSenderPort(), j_msg)) {
+        return false;
+    }
     return true;
 }
