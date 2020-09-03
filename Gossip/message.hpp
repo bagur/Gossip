@@ -105,7 +105,7 @@ public:
     
     bool operator<(gossipInfo other) const
     {
-        return getKey() > other.getKey();
+        return getKey() <= other.getKey();
     }
 };
 

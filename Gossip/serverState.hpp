@@ -15,6 +15,7 @@
 #include <vector>
 #include <mutex>
 #include "message.hpp"
+#include "logger.hpp"
 
 #define STATE_UNKNOWN    0
 #define STATE_BOOTSTRAP  1
@@ -42,6 +43,8 @@ public:
     std::vector<gossipInfo> getGlobalStateList();
     void processNewStateList(std::vector<gossipInfo> peer_list, std::vector<gossipInfo>& peer_list_new);
     gossipInfo getInfo();
+    void logInfo();
+    void incHeartbeat();
     friend bool initServerState(const std::string& ip_addr, const int port, const int version,
                                 std::vector<gossipInfo> endpoints_from_config);
 };

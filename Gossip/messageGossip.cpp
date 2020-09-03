@@ -9,7 +9,7 @@
 #include "messageGossip.hpp"
 
 void to_json(json& j, const messageSyn& msg) {
-    j = json{{"opcode", msg.getOpcode()}, {"opcode_str", msg.getOpcodeStr()}};
+    j = json{{"opcode", msg.getOpcode()}, {"opcode_str", msg.getOpcodeStr()}, {"sender_ip_addr", msg.getSenderIPAddr()}, {"sender_port", msg.getSenderPort()}};
     for (int i = 0; i < msg.gossip_info_list.size(); i++) {
         j["gossip_info_list"].push_back({
             {"node_id", {
@@ -26,6 +26,8 @@ void to_json(json& j, const messageSyn& msg) {
 void from_json(const json& j, messageSyn& msg) {
     msg.setOpcode(j.at("opcode"));
     msg.setOpcodeStr(j.at("opcode_str"));
+    msg.setSenderIPAddr(j.at("sender_ip_addr"));
+    msg.setSenderPort(j.at("sender_port"));
     
     for (const auto& elem : j["gossip_info_list"])
     {
@@ -39,7 +41,7 @@ void from_json(const json& j, messageSyn& msg) {
 
 
 void to_json(json& j, const messageAck& msg) {
-    j = json{{"opcode", msg.getOpcode()}, {"opcode_str", msg.getOpcodeStr()}};
+    j = json{{"opcode", msg.getOpcode()}, {"opcode_str", msg.getOpcodeStr()}, {"sender_ip_addr", msg.getSenderIPAddr()}, {"sender_port", msg.getSenderPort()}};
     for (int i = 0; i < msg.gossip_info_new_list.size(); i++) {
         j["gossip_info_new_list"].push_back({
             {"node_id", {
@@ -51,23 +53,13 @@ void to_json(json& j, const messageAck& msg) {
             {"state", msg.gossip_info_new_list[i].state}
         });
     }
-    
-    for (int i = 0; i < msg.gossip_info_needed_list.size(); i++) {
-        j["gossip_info_needed_list"].push_back({
-            {"node_id", {
-                {"ip_addr", msg.gossip_info_needed_list[i].node_id.ip_addr},
-                {"port", msg.gossip_info_needed_list[i].node_id.port}
-            }},
-            {"version", msg.gossip_info_needed_list[i].version},
-            {"heartbeat", msg.gossip_info_needed_list[i].heartbeat},
-            {"state", msg.gossip_info_needed_list[i].state}
-        });
-    }
 }
 
 void from_json(const json& j, messageAck& msg) {
     msg.setOpcode(j.at("opcode"));
     msg.setOpcodeStr(j.at("opcode_str"));
+    msg.setSenderIPAddr(j.at("sender_ip_addr"));
+    msg.setSenderPort(j.at("sender_port"));
     
     for (const auto& elem : j["gossip_info_new_list"])
     {
@@ -76,43 +68,5 @@ void from_json(const json& j, messageAck& msg) {
                                                       elem["version"],
                                                       elem["heartbeat"],
                                                       elem["state"]));
-    }
-    
-    for (const auto& elem : j["gossip_info_needed_list"])
-    {
-        msg.gossip_info_needed_list.push_back(gossipInfo(elem["node_id"]["ip_addr"],
-                                                         elem["node_id"]["port"],
-                                                         elem["version"],
-                                                         elem["heartbeat"],
-                                                         elem["state"]));
-    }
-}
-
-void to_json(json& j, const messageAck2& msg) {
-    j = json{{"opcode", msg.getOpcode()}, {"opcode_str", msg.getOpcodeStr()}};
-    for (int i = 0; i < msg.gossip_info_needed_reply_list.size(); i++) {
-        j["gossip_info_needed_reply_list"].push_back({
-            {"node_id", {
-                {"ip_addr", msg.gossip_info_needed_reply_list[i].node_id.ip_addr},
-                {"port", msg.gossip_info_needed_reply_list[i].node_id.port}
-            }},
-            {"version", msg.gossip_info_needed_reply_list[i].version},
-            {"heartbeat", msg.gossip_info_needed_reply_list[i].heartbeat},
-            {"state", msg.gossip_info_needed_reply_list[i].state}
-        });
-    }
-}
-
-void from_json(const json& j, messageAck2& msg) {
-    msg.setOpcode(j.at("opcode"));
-    msg.setOpcodeStr(j.at("opcode_str"));
-    
-    for (const auto& elem : j["gossip_info_needed_reply_list"])
-    {
-        msg.gossip_info_needed_reply_list.push_back(gossipInfo(elem["node_id"]["ip_addr"],
-                                                               elem["node_id"]["port"],
-                                                               elem["version"],
-                                                               elem["heartbeat"],
-                                                               elem["state"]));
     }
 }

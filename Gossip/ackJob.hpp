@@ -17,10 +17,11 @@
 using json = nlohmann::json;
 
 class ackJob : public clientJob {
-    messageSyn syn;
+    messageSyn *syn;
 public:
-    ackJob(json data);
+    ackJob(messageSyn *msg_syn);
     ~ackJob();
+    bool sendAckMessage(std::vector<gossipInfo> new_list_peer);
     bool processJob();
 };
 #endif /* AckJob_hpp */

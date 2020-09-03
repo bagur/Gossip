@@ -19,8 +19,16 @@ using json = nlohmann::json;
 class messageSyn : public message {
 public:
     std::vector<gossipInfo> gossip_info_list;
+    
     messageSyn() : message(MSG_SYN) {
     }
+    
+    messageSyn(const messageSyn &obj) : message(MSG_SYN) {
+        this->setSenderIPAddr(obj.getSenderIPAddr());
+        this->setSenderPort(obj.getSenderPort());
+        this->gossip_info_list = obj.gossip_info_list;
+    }
+    
     ~messageSyn() {
     }
 };
@@ -31,19 +39,14 @@ void from_json(const json& j, messageSyn& msg);
 class messageAck : public message {
 public:
     std::vector<gossipInfo> gossip_info_new_list;
-    std::vector<gossipInfo> gossip_info_needed_list;
+    messageAck() : message(MSG_ACK) {
+    }
+    ~messageAck() {
+    }
 };
 
 void to_json(json& j, const messageAck& msg);
 void from_json(const json& j, messageAck& msg);
-
-class messageAck2 : public message {
-public:
-    std::vector<gossipInfo> gossip_info_needed_reply_list;
-};
-
-void to_json(json& j, const messageAck2& msg);
-void from_json(const json& j, messageAck2& msg);
 
 
 #endif /* messageSyn_hpp */

@@ -97,13 +97,15 @@ serverJob::processJob() {
     }
     
     log_trace(data);
+    //std::cout << data << std::endl;
     json j  = json::parse(data);
+    //std::cout << j.dump() << std::endl;
     switch ((int)j.at("opcode")) {
         case MSG_SYN:
         {
             log_trace("RECEIVED SYN MESSAGE");
-            ackJob ack_job(j);
-            pool->add_job(new threadPoolArg(ack_job));
+            messageSyn *msg_syn = new messageSyn(j);
+            pool->add_job(new threadPoolArg(new ackJob(msg_syn)));
             break;
         }
         case MSG_ACK:

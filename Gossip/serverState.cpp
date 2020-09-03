@@ -112,13 +112,43 @@ serverState::processNewStateList(std::vector<gossipInfo> peer_list, std::vector<
             }
         }
         
+        while (i < global_state_list.size()) {
+            new_list.push_back(global_state_list[i]);
+            peer_list_new.push_back(global_state_list[i]);
+            i++;
+        }
+        
+        while (j < peer_list.size()) {
+            new_list.push_back(peer_list[j]);
+            j++;
+        }
+        
         this->global_state_list.clear();
         this->global_state_list = new_list;
+        
+        if (this->global_state_list.size() > 1 && my_info.state == STATE_INITED)
+            my_info.state = STATE_NORMAL;
     }
 }
 
 gossipInfo
 serverState::getInfo() {
     return this->my_info;
+}
+
+void
+serverState::incHeartbeat() {
+    this->my_info.heartbeat++;
+}
+
+void
+serverState::logInfo() {
+    {
+        std::unique_lock<std::mutex> state_lock(global_state_list_mtx);
+        for (gossipInfo& info : global_state_list) {
+            log_trace(info.getKey() + " " + std::to_string(info.heartbeat));
+            std::cout << info.getKey() + " " + std::to_string(info.heartbeat) << std::endl;
+        }
+    }
 }
 

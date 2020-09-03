@@ -107,8 +107,8 @@ serverMain::getSocketName() {
 
     log_error("Local IP address is: " + std::string(inet_ntoa(sock_addr.sin_addr)));
     log_error("Local port is: " + std::to_string(ntohs(sock_addr.sin_port)));
-    //std::cout << "Local IP address is: " + std::string(inet_ntoa(sock_addr.sin_addr)) << std::endl;
-    //std::cout << "Local port is: " + std::to_string(ntohs(sock_addr.sin_port)) << std::endl;
+    std::cout << "Local IP address is: " + std::string(inet_ntoa(sock_addr.sin_addr)) << std::endl;
+    std::cout << "Local port is: " + std::to_string(ntohs(sock_addr.sin_port)) << std::endl;
     ip_addr = inet_ntoa(sock_addr.sin_addr);
     port = ntohs(sock_addr.sin_port);
     return true;
@@ -154,8 +154,7 @@ serverMain::process() {
             }
         }
         else {
-            serverJob server_job(client, client_size, client_socket_fd, pool);
-            threadPoolArg *arg = new threadPoolArg(server_job);
+            threadPoolArg *arg = new threadPoolArg(new serverJob(client, client_size, client_socket_fd, pool));
             pool->add_job(arg); // Will be deleted by the thread after processing
         }
     }

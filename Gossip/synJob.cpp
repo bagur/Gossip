@@ -38,6 +38,15 @@ synJob::processJob() {
     syn_msg.setSenderPort(p_server_state->getInfo().node_id.port);
     syn_msg.gossip_info_list = p_server_state->getGlobalStateList();
     
+    for (int i = 0; i < syn_msg.gossip_info_list.size(); i++) {
+        if (syn_msg.gossip_info_list[i].getKey() == p_server_state->getInfo().getKey()) {
+            syn_msg.gossip_info_list[i].heartbeat = p_server_state->getInfo().heartbeat;
+            syn_msg.gossip_info_list[i].version   = p_server_state->getInfo().version;
+            syn_msg.gossip_info_list[i].state     = p_server_state->getInfo().state;
+            break;
+        }
+    }
+    
     if (syn_msg.gossip_info_list.size() <= 1)
         return false;
     else {

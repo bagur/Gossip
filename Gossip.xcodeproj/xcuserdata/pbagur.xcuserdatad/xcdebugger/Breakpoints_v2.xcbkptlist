@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D8A12F77-64E3-4487-BF05-AA2FBAE83FB1"
-            shouldBeEnabled = "No"
+            uuid = "13E34006-B4A4-4095-968F-601C6C4A3453"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Gossip/synJob.cpp"
+            filePath = "Gossip/messageGossip.hpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "synJob::processJob()"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "messageSyn(obj)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

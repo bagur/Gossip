@@ -65,7 +65,7 @@ threadPool::process_loop() {
             arg_list.pop();
             /* arg_lock will be released automatically on exiting the scope */
         }
-        arg->curJob.processJob();
+        arg->curJob->processJob();
         delete arg;
     }
 }
@@ -73,13 +73,13 @@ threadPool::process_loop() {
 void
 threadPool::timer_loop() {
     while (!terminate) {
-        synJob syn_job;
-        this->add_job(new threadPoolArg(syn_job));
+        getServerState()->incHeartbeat();
+        this->add_job(new threadPoolArg(new synJob()));
         
         if (logsPending()) {
-            loggerJob logger_job;
-            this->add_job(new threadPoolArg(logger_job));
+            this->add_job(new threadPoolArg(new loggerJob()));
         }
+        getServerState()->logInfo();
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     }
 }
@@ -92,9 +92,10 @@ threadPool::add_job(threadPoolArg* arg) {
     wait_queue.notify_one();
 }
 
-threadPoolArg::threadPoolArg(job& curJob) : curJob(curJob) {
+threadPoolArg::threadPoolArg(job *curJob) : curJob(curJob) {
 }
 
 threadPoolArg::~threadPoolArg() {
+    delete curJob;
 }
 

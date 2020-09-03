@@ -22,8 +22,8 @@
 
 class threadPoolArg {
 public:
-    job& curJob;
-    threadPoolArg(job& curJob);
+    job* curJob;
+    threadPoolArg(job* curJob);
     ~threadPoolArg();
 };
 
