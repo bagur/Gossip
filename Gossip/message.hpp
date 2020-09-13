@@ -18,12 +18,10 @@ using json = nlohmann::json;
 
 #define MSG_SYN  0
 #define MSG_ACK  1
-#define MSG_ACK2 2
 
 static const char *message_type_str[] = {
     "MSG_SYN",
     "MSG_ACK",
-    "MSG_ACK2"
 };
 
 class message {

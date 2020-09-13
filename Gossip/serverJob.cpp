@@ -109,11 +109,12 @@ serverJob::processJob() {
             break;
         }
         case MSG_ACK:
+        {
             log_trace("RECEIVED ACK MESSAGE");
+            messageAck *msg_ack = new messageAck(j);
+            pool->add_job(new threadPoolArg(new synAckJob(msg_ack)));
             break;
-        case MSG_ACK2:
-            log_trace("RECEIVED ACK2 MESSAGE");
-            break;
+        }
         default:
             break;
     }

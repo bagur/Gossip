@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4FAC7A3C24CE25E700F1DDB0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FAC7A3B24CE25E700F1DDB0 /* main.cpp */; };
+		4FB122C3250D886B005278AC /* synAckJob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FB122C1250D886B005278AC /* synAckJob.cpp */; };
 		4FCA057924E0627C00BAD4A1 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FCA057724E0627C00BAD4A1 /* logger.cpp */; };
 		4FCA058524E9AFD200BAD4A1 /* messageGossip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FCA058324E9AFD200BAD4A1 /* messageGossip.cpp */; };
 		4FD2789324D3990400886310 /* serverMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FD2789124D3990400886310 /* serverMain.cpp */; };
@@ -34,6 +35,8 @@
 /* Begin PBXFileReference section */
 		4FAC7A3824CE25E700F1DDB0 /* Gossip */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Gossip; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FAC7A3B24CE25E700F1DDB0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4FB122C1250D886B005278AC /* synAckJob.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = synAckJob.cpp; sourceTree = "<group>"; };
+		4FB122C2250D886B005278AC /* synAckJob.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = synAckJob.hpp; sourceTree = "<group>"; };
 		4FCA057724E0627C00BAD4A1 /* logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
 		4FCA057824E0627C00BAD4A1 /* logger.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = logger.hpp; sourceTree = "<group>"; };
 		4FCA058124E9ADFE00BAD4A1 /* message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = message.hpp; sourceTree = "<group>"; };
@@ -109,6 +112,8 @@
 				4FFC812724F4CA4C0025F816 /* clientJob.hpp */,
 				4FFC8129250007CE0025F816 /* ackJob.cpp */,
 				4FFC812A250007CE0025F816 /* ackJob.hpp */,
+				4FB122C1250D886B005278AC /* synAckJob.cpp */,
+				4FB122C2250D886B005278AC /* synAckJob.hpp */,
 			);
 			path = Gossip;
 			sourceTree = "<group>";
@@ -180,6 +185,7 @@
 				4FFC812824F4CA4C0025F816 /* clientJob.cpp in Sources */,
 				4FAC7A3C24CE25E700F1DDB0 /* main.cpp in Sources */,
 				4FD2789324D3990400886310 /* serverMain.cpp in Sources */,
+				4FB122C3250D886B005278AC /* synAckJob.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

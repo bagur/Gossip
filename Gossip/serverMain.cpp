@@ -108,7 +108,7 @@ serverMain::getSocketName() {
     log_error("Local IP address is: " + std::string(inet_ntoa(sock_addr.sin_addr)));
     log_error("Local port is: " + std::to_string(ntohs(sock_addr.sin_port)));
     //std::cout << "Local IP address is: " + std::string(inet_ntoa(sock_addr.sin_addr)) << std::endl;
-    //std::cout << "Local port is: " + std::to_string(ntohs(sock_addr.sin_port)) << std::endl;
+    std::cout << "Local port is: " + std::to_string(ntohs(sock_addr.sin_port)) << std::endl;
     ip_addr = inet_ntoa(sock_addr.sin_addr);
     port = ntohs(sock_addr.sin_port);
     return true;

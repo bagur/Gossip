@@ -79,7 +79,7 @@ threadPool::timer_loop() {
         if (logsPending()) {
             this->add_job(new threadPoolArg(new loggerJob()));
         }
-        getServerState()->logInfo();
+        //getServerState()->logInfo();
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     }
 }

@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include "job.hpp"
 #include "ackJob.hpp"
+#include "synAckJob.hpp"
 #include "threadPool.hpp"
 
 #define CHUNK_DATA     512
