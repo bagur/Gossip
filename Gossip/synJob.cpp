@@ -19,14 +19,21 @@ bool
 synJob::sendSyn(messageSyn& msg, int idx) {
     std::string ip_addr = msg.gossip_info_list[idx].node_id.ip_addr;
     int         port    = msg.gossip_info_list[idx].node_id.port;
-    json        j_msg   = msg;
+    bool        rval    = true;
     
-    if (!sendData(ip_addr, port, j_msg)) {
-        log_error("failed to send SYN to " + ip_addr + ":" + std::to_string(port));
-        return false;
+    try {
+        json        j_msg   = msg;
+        
+        if (!sendData(ip_addr, port, j_msg)) {
+            log_error("failed to send SYN to " + ip_addr + ":" + std::to_string(port));
+            rval = false;
+        }
     }
-    
-    return true;
+    catch(...) {
+        log_error("failed to send SYN to " + ip_addr + ":" + std::to_string(port));
+        rval = false;
+    }
+    return rval;
 }
 
 bool

@@ -22,7 +22,8 @@
 enum level {
     ERROR,
     WARNING,
-    TRACE
+    TRACE,
+    VERBOSE
 };
 
 class logInfo {
@@ -43,13 +44,14 @@ private:
     std::ofstream logstream;
     std::mutex queue_mtx;
     std::queue<logInfo> pending_logs;
+    level minLevel;
     // TODO - priority based logging
     
 public:
     logger();
     ~logger();
     void log(level level, const std::string& msg);
-    void initLog(const std::string& filepath);
+    void initLog(const std::string& filepath, level minLevel);
     void writeToFile();
 };
 
@@ -64,6 +66,7 @@ static std::atomic<bool> logs_in_queue{false};
 void    log_error(std::string const& msg);
 void    log_warn(std::string const& msg);
 void    log_trace(std::string const& msg);
-void    initLog(const std::string& filepath);
+void    log_verbose(std::string const& msg);
+void    initLog(const std::string& filepath, level minLevel);
 bool    logsPending();
 #endif /* logger_hpp */

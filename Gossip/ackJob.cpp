@@ -18,19 +18,26 @@ ackJob::~ackJob() {
 bool
 ackJob::sendAckMessage(std::vector<gossipInfo> new_list_peer) {
     messageAck          ack_msg;
+    bool                rval           = true;
     serverState        *p_server_state = getServerState();
     
     ack_msg.setSenderIPAddr(p_server_state->getInfo().node_id.ip_addr);
     ack_msg.setSenderPort(p_server_state->getInfo().node_id.port);
     ack_msg.gossip_info_new_list = new_list_peer;
     
-    json j_msg = ack_msg;
-    if (!sendData(syn->getSenderIPAddr(), syn->getSenderPort(), j_msg)) {
+    try {
+        json j_msg = ack_msg;
+        if (!sendData(syn->getSenderIPAddr(), syn->getSenderPort(), j_msg)) {
+            log_error("failed to send ACK to " + syn->getSenderIPAddr() + ":" + std::to_string(syn->getSenderPort()));
+            rval = false;
+        }
+    }
+    catch (...) {
         log_error("failed to send ACK to " + syn->getSenderIPAddr() + ":" + std::to_string(syn->getSenderPort()));
-        return false;
+        rval = false;
     }
     
-    return true;
+    return rval;
 }
 
 bool

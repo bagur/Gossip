@@ -15,9 +15,9 @@ inline logger *getLog() {
 }
 
 void
-initLog(const std::string& filepath) {
+initLog(const std::string& filepath, level minLevel) {
     logger *pLog = getLog();
-    pLog->initLog(filepath);
+    pLog->initLog(filepath, minLevel);
 }
 
 void
@@ -35,6 +35,11 @@ log_trace(std::string const& msg) {
     getLog()->log(level::TRACE, msg);
 }
 
+void
+log_verbose(std::string const& msg) {
+    getLog()->log(level::VERBOSE, msg);
+}
+
 bool
 logsPending() {
     bool tmp = true;
@@ -45,7 +50,7 @@ logsPending() {
     return false;
 }
 
-logger::logger() : logstream(), queue_mtx(), pending_logs() {
+logger::logger() : logstream(), queue_mtx(), pending_logs(), minLevel(TRACE) {
 }
 
 logger::~logger() {
@@ -53,21 +58,24 @@ logger::~logger() {
     logstream.close();
 }
 
-void logger::initLog(const std::string &filepath) {
+void logger::initLog(const std::string &filepath, level minLevel) {
+    this->minLevel = minLevel;
     logstream.open(filepath);
 }
 
 void logger::log(level level, const std::string &msg) {
-    /*
-     * TODO hash table with a (queue + lock) in each slot
-     * to reduce contention b/w writers
-     */
-    queue_mtx.lock();
-    pending_logs.push(logInfo(msg));
-    queue_mtx.unlock();
-    // We don't care if two threads enter writeToFile
-    // ocasionally
-    logs_in_queue = true;
+    if (level <= minLevel) {
+        /*
+         * TODO hash table with a (queue + lock) in each slot
+         * to reduce contention b/w writers
+         */
+        queue_mtx.lock();
+        pending_logs.push(logInfo(msg));
+        queue_mtx.unlock();
+        // We don't care if two threads enter writeToFile
+        // ocasionally
+        logs_in_queue = true;
+    }
 }
 
 void logger::writeToFile() {
@@ -102,7 +110,7 @@ std::string logInfo::currentDateTime() {
     tstruct = *localtime(&now);
     
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
-
+    
     return buf;
 }
 
