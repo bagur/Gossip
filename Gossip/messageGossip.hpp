@@ -26,6 +26,7 @@ public:
     messageSyn(const messageSyn &obj) : message(MSG_SYN) {
         this->setSenderIPAddr(obj.getSenderIPAddr());
         this->setSenderPort(obj.getSenderPort());
+        this->setSenderClusterId(obj.getSenderClusterId());
         this->gossip_info_list = obj.gossip_info_list;
     }
     

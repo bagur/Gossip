@@ -30,6 +30,7 @@ protected:
     std::string opcode_str;
     std::string sender_ip_addr;
     int sender_port;
+    std::string sender_cluster_id;
 public:
     message(int opcode) : opcode(opcode) {
         opcode_str = message_type_str[opcode];
@@ -69,6 +70,14 @@ public:
     void setSenderPort(int sender_port) {
         this->sender_port = sender_port;
     }
+    
+    std::string getSenderClusterId() const {
+        return this->sender_cluster_id;
+    }
+    
+    void setSenderClusterId(std::string sender_cluster_id) {
+        this->sender_cluster_id = sender_cluster_id;
+    }
 };
 
 class addr {
@@ -86,12 +95,13 @@ public:
 class gossipInfo {
 public:
     addr node_id;
+    std::string cluster_id;
     int  version;
     long heartbeat;
     int  state;
     
-    gossipInfo(std::string ip_addr, int port, int version, long heartbeat, int state) :
-    node_id(ip_addr, port), version(version), heartbeat(heartbeat), state(state) {
+    gossipInfo(std::string ip_addr, int port, std::string cluster_id, int version, long heartbeat, int state) :
+    node_id(ip_addr, port), cluster_id(cluster_id), version(version), heartbeat(heartbeat), state(state) {
     }
     
     ~gossipInfo() {

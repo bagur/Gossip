@@ -28,12 +28,14 @@ void from_json(const json& j, messageSyn& msg) {
     msg.setOpcodeStr(j.at("opcode_str"));
     msg.setSenderIPAddr(j.at("sender_ip_addr"));
     msg.setSenderPort(j.at("sender_port"));
+    msg.setSenderClusterId(j.at("sender_cluster_id"));
     
     if (j.contains("gossip_info_list")) {
         for (const auto& elem : j["gossip_info_list"])
         {
             msg.gossip_info_list.push_back(gossipInfo(elem["node_id"]["ip_addr"],
                                                       elem["node_id"]["port"],
+                                                      elem["cluster_id"],
                                                       elem["version"],
                                                       elem["heartbeat"],
                                                       elem["state"]));
@@ -62,12 +64,14 @@ void from_json(const json& j, messageAck& msg) {
     msg.setOpcodeStr(j.at("opcode_str"));
     msg.setSenderIPAddr(j.at("sender_ip_addr"));
     msg.setSenderPort(j.at("sender_port"));
+    msg.setSenderClusterId(j.at("sender_cluster_id"));
     
     if (j.contains("gossip_info_new_list")) {
         for (const auto& elem : j["gossip_info_new_list"])
         {
             msg.gossip_info_new_list.push_back(gossipInfo(elem["node_id"]["ip_addr"],
                                                           elem["node_id"]["port"],
+                                                          elem["cluster_id"],
                                                           elem["version"],
                                                           elem["heartbeat"],
                                                           elem["state"]));

@@ -14,37 +14,22 @@
 #include <string.h>
 #include <vector>
 #include <mutex>
+#include <unordered_map>
 #include "message.hpp"
 #include "logger.hpp"
+#include "clusterInfo.hpp"
 
-#define STATE_UNKNOWN    0
-#define STATE_BOOTSTRAP  1
-#define STATE_INITED     2
-#define STATE_NORMAL     3
-#define STATE_TEARDOWN   4
-
-static const char *state_str[] = {
-    "STATE_UNKNOWN",
-    "STATE_BOOTSTRAP",
-    "STATE_INITED",
-    "STATE_NORMAL",
-    "STATE_TEARDOWN"
-};
 
 class serverState {
 private:
-    gossipInfo my_info;
-    std::mutex global_state_list_mtx;
-    std::vector<gossipInfo> global_state_list;
+    std::unordered_map<std::string, clusterInfo *> cluster_map_table;
 public:
     serverState();
     ~serverState();
-    void init(const std::string& ip_addr, const int port, const int version);
-    std::vector<gossipInfo> getGlobalStateList();
-    void processNewStateList(std::vector<gossipInfo> peer_list, std::vector<gossipInfo>& peer_list_new);
-    gossipInfo getInfo();
-    void logInfo();
-    void incHeartbeat();
+    void logState();
+    void updateHeartbeat();
+    clusterInfo *getCluster(std::string key);
+    clusterInfo *getRandomCluster();
     friend bool initServerState(const std::string& ip_addr, const int port, const int version,
                                 std::vector<gossipInfo> endpoints_from_config);
 };

@@ -73,7 +73,7 @@ threadPool::process_loop() {
 void
 threadPool::timer_loop() {
     while (!terminate) {
-        getServerState()->incHeartbeat();
+        //getServerState()->incHeartbeat();
         this->add_job(new threadPoolArg(new synJob()));
         
         if (logsPending()) {

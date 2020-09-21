@@ -65,6 +65,7 @@ read_config(std::string config_file) {
             {
                 seed_list.push_back(gossipInfo(elem["node_id"]["ip_addr"],
                                                elem["node_id"]["port"],
+                                               elem["cluster_id"],
                                                elem["version"],
                                                0,
                                                STATE_UNKNOWN));

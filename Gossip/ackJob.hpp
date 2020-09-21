@@ -21,7 +21,7 @@ class ackJob : public clientJob {
 public:
     ackJob(messageSyn *msg_syn);
     ~ackJob();
-    bool sendAckMessage(std::vector<gossipInfo> new_list_peer);
+    bool sendAckMessage(clusterInfo *cluster, std::vector<gossipInfo> new_list_peer);
     bool processJob();
 };
 #endif /* AckJob_hpp */

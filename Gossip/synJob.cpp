@@ -39,34 +39,31 @@ synJob::sendSyn(messageSyn& msg, int idx) {
 bool
 synJob::processJob() {
     messageSyn          syn_msg;
+    bool                rval           = false;
     serverState        *p_server_state = getServerState();
+    clusterInfo        *cluster        = p_server_state->getRandomCluster();
     
-    syn_msg.setSenderIPAddr(p_server_state->getInfo().node_id.ip_addr);
-    syn_msg.setSenderPort(p_server_state->getInfo().node_id.port);
-    syn_msg.gossip_info_list = p_server_state->getGlobalStateList();
-    
-    for (int i = 0; i < syn_msg.gossip_info_list.size(); i++) {
-        if (syn_msg.gossip_info_list[i].getKey() == p_server_state->getInfo().getKey()) {
-            syn_msg.gossip_info_list[i].heartbeat = p_server_state->getInfo().heartbeat;
-            syn_msg.gossip_info_list[i].version   = p_server_state->getInfo().version;
-            syn_msg.gossip_info_list[i].state     = p_server_state->getInfo().state;
-            break;
+    /* Binary search for myInfo and syn heartbeat value */
+    if (!!cluster) {
+        syn_msg.setSenderIPAddr(cluster->getInfo().node_id.ip_addr);
+        syn_msg.setSenderPort(cluster->getInfo().node_id.port);
+        syn_msg.setSenderClusterId(cluster->getInfo().cluster_id);
+        syn_msg.gossip_info_list = cluster->getNodesList();
+        
+        if (syn_msg.gossip_info_list.size() <= 1)
+            return false;
+        else {
+            srand((unsigned)time(0));
+            for (int i = 0; i < 1; i++) {
+            retry:
+                int idx = rand() % syn_msg.gossip_info_list.size();
+                if (syn_msg.gossip_info_list[idx].node_id.ip_addr == syn_msg.getSenderIPAddr() &&
+                    syn_msg.gossip_info_list[idx].node_id.port == syn_msg.getSenderPort())
+                    goto retry;
+                rval = sendSyn(syn_msg, idx);
+            }
         }
     }
     
-    if (syn_msg.gossip_info_list.size() <= 1)
-        return false;
-    else {
-        srand((unsigned)time(0));
-        for (int i = 0; i < 1; i++) {
-        retry:
-            int idx = rand() % syn_msg.gossip_info_list.size();
-            if (syn_msg.gossip_info_list[idx].node_id.ip_addr == syn_msg.getSenderIPAddr() &&
-                syn_msg.gossip_info_list[idx].node_id.port == syn_msg.getSenderPort())
-                goto retry;
-            sendSyn(syn_msg, idx);
-        }
-    }
-    
-    return true;
+    return rval;
 }
