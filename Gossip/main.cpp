@@ -12,13 +12,16 @@
 #include "logger.hpp"
 #include "serverState.hpp"
 
-#define NUM_THREADS_DEFAULT 8
-#define VERSION_DEFAULT     1
-#define BACKLOG_DEFAULT     8
+#define NUM_THREADS_DEFAULT  8
+#define VERSION_DEFAULT      1
+#define BACKLOG_DEFAULT      8
+#define NODE_TIMEOUT_DEFAULT 90
 
-static int NUM_THREADS;
-static int VERSION;
-static int BACKLOG;
+int NUM_THREADS;
+int VERSION;
+int BACKLOG;
+int NODE_TIMEOUT;
+std::string PRIMARY_CLUSTER_ID = "";
 
 std::vector<gossipInfo> seed_list;
 
@@ -47,9 +50,10 @@ read_config(std::string config_file) {
         json j;
         f >> j;
         
-        NUM_THREADS = NUM_THREADS_DEFAULT;
-        VERSION     = VERSION_DEFAULT;
-        BACKLOG     = BACKLOG_DEFAULT;
+        NUM_THREADS  = NUM_THREADS_DEFAULT;
+        VERSION      = VERSION_DEFAULT;
+        BACKLOG      = BACKLOG_DEFAULT;
+        NODE_TIMEOUT = NODE_TIMEOUT_DEFAULT;
         
         if (j.contains("NUM_THREADS"))
             NUM_THREADS = j.at("NUM_THREADS");
@@ -59,6 +63,12 @@ read_config(std::string config_file) {
         
         if (j.contains("BACKLOG"))
             BACKLOG = j.at("BACKLOG");
+        
+        if (j.contains("NODE_TIMEOUT"))
+            NODE_TIMEOUT = j.at("NODE_TIMEOUT");
+        
+        if (j.contains("PRIMARY_CLUSTER_ID"))
+            PRIMARY_CLUSTER_ID = j.at("PRIMARY_CLUSTER_ID");
         
         if (j.contains("SEED_LIST")) {
             for (const auto& elem : j["SEED_LIST"])
@@ -89,13 +99,24 @@ init() {
     signal(SIGINT, handle_sighup);
 }
 
+
+bool
+init_server() {
+    if (seed_list.size() == 0 && PRIMARY_CLUSTER_ID.size() == 0)
+        return false;
+    else if (seed_list.size() > 0)
+        return initServerState(mainServerJob->getIpAddr(), mainServerJob->getPort(), VERSION, seed_list);
+    else
+        return initServerState(mainServerJob->getIpAddr(), mainServerJob->getPort(), VERSION, PRIMARY_CLUSTER_ID);
+}
+
 bool
 process() {
     bool rval = true;
     
     if (!mainServerJob->init())
         rval = false;
-    else if (!initServerState(mainServerJob->getIpAddr(), mainServerJob->getPort(), VERSION, seed_list))
+    else if (!init_server())
         rval = false;
     else if (!mainServerJob->process())
         rval = false;
@@ -122,7 +143,7 @@ main(int argc, const char * argv[]) {
     }
     
     std::cout << config_name << std::endl;
-    if (read_config(config_name))
+    if (!read_config(config_name))
         rval = -EINVAL;
     else {
         init();

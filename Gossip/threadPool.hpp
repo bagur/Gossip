@@ -18,6 +18,7 @@
 #include "job.hpp"
 #include "logger.hpp"
 #include "synJob.hpp"
+#include "membershipJob.hpp"
 
 
 class threadPoolArg {

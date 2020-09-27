@@ -72,7 +72,9 @@ threadPool::process_loop() {
 
 void
 threadPool::timer_loop() {
+    int nticks = 0;
     while (!terminate) {
+        nticks++;
         //getServerState()->incHeartbeat();
         this->add_job(new threadPoolArg(new synJob()));
         
@@ -80,6 +82,11 @@ threadPool::timer_loop() {
             this->add_job(new threadPoolArg(new loggerJob()));
         }
         //getServerState()->logInfo();
+        
+        if (nticks % 20 == 0) {
+            this->add_job(new threadPoolArg(new membershipJob()));
+        }
+        
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     }
 }

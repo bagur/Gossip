@@ -31,6 +31,7 @@ protected:
     std::string sender_ip_addr;
     int sender_port;
     std::string sender_cluster_id;
+    std::string sender_key;
 public:
     message(int opcode) : opcode(opcode) {
         opcode_str = message_type_str[opcode];
@@ -78,6 +79,14 @@ public:
     void setSenderClusterId(std::string sender_cluster_id) {
         this->sender_cluster_id = sender_cluster_id;
     }
+    
+    std::string getSenderKey() const {
+        return this->sender_key;
+    }
+    
+    void setSenderKey(std::string sender_key) {
+        this->sender_key = sender_key;
+    }
 };
 
 class addr {
@@ -108,7 +117,7 @@ public:
     }
     
     std::string getKey() const {
-        return node_id.ip_addr + ":" + std::to_string(node_id.port);
+        return cluster_id + ":" + node_id.ip_addr + ":" + std::to_string(node_id.port);
     }
     
     bool operator<(gossipInfo other) const

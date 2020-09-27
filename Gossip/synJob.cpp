@@ -22,7 +22,7 @@ synJob::sendSyn(messageSyn& msg, int idx) {
     bool        rval    = true;
     
     try {
-        json        j_msg   = msg;
+        json j_msg = msg;
         
         if (!sendData(ip_addr, port, j_msg)) {
             log_error("failed to send SYN to " + ip_addr + ":" + std::to_string(port));
@@ -61,6 +61,9 @@ synJob::processJob() {
                     syn_msg.gossip_info_list[idx].node_id.port == syn_msg.getSenderPort())
                     goto retry;
                 rval = sendSyn(syn_msg, idx);
+                if (!rval) {
+                    cluster->addToNodesDownMap(syn_msg.gossip_info_list[idx].getKey());
+                }
             }
         }
     }

@@ -26,16 +26,24 @@ private:
 public:
     serverState();
     ~serverState();
+    
+    std::unordered_map<std::string, clusterInfo *>& getClusterMap() {
+        return cluster_map_table;
+    }
+    
     void logState();
     void updateHeartbeat();
     clusterInfo *getCluster(std::string key);
     clusterInfo *getRandomCluster();
     friend bool initServerState(const std::string& ip_addr, const int port, const int version,
                                 std::vector<gossipInfo> endpoints_from_config);
+    friend bool initServerState(const std::string& ip_addr, const int port, const int version,
+                                std::string primary_cluster_id);
 };
 
 bool initServerState(const std::string& ip_addr, const int port, const int version,
                      std::vector<gossipInfo> endpoints_from_config);
+bool initServerState(const std::string& ip_addr, const int port, const int version, std::string primary_cluster);
 serverState *getServerState();
 
 #endif /* serverState_hpp */

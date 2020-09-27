@@ -23,6 +23,7 @@ initServerState(const std::string& ip_addr, const int port, const int version,
         std::string key = gInfo.cluster_id;
         if (pServerState->cluster_map_table.count(key) == 0) {
             pServerState->cluster_map_table[key] = new clusterInfo(ip_addr, port, key, version);
+            pServerState->cluster_map_table[key]->addNode(gInfo);
         }
         else {
             pServerState->cluster_map_table[key]->addNode(gInfo);
@@ -32,6 +33,13 @@ initServerState(const std::string& ip_addr, const int port, const int version,
     for (auto it : pServerState->cluster_map_table)
         it.second->initState();
     
+    return true;
+}
+
+bool initServerState(const std::string& ip_addr, const int port, const int version,
+                     std::string primary_cluster_id) {
+    getServerState()->cluster_map_table[primary_cluster_id] =
+        new clusterInfo(ip_addr, port, primary_cluster_id, version);
     return true;
 }
 

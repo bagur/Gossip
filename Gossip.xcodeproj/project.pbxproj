@@ -10,6 +10,7 @@
 		4FAC7A3C24CE25E700F1DDB0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FAC7A3B24CE25E700F1DDB0 /* main.cpp */; };
 		4FB122C3250D886B005278AC /* synAckJob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FB122C1250D886B005278AC /* synAckJob.cpp */; };
 		4FB122C6251717D5005278AC /* clusterInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FB122C4251717D5005278AC /* clusterInfo.cpp */; };
+		4FB122C9251FDCAE005278AC /* membershipJob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FB122C7251FDCAE005278AC /* membershipJob.cpp */; };
 		4FCA057924E0627C00BAD4A1 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FCA057724E0627C00BAD4A1 /* logger.cpp */; };
 		4FCA058524E9AFD200BAD4A1 /* messageGossip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FCA058324E9AFD200BAD4A1 /* messageGossip.cpp */; };
 		4FD2789324D3990400886310 /* serverMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FD2789124D3990400886310 /* serverMain.cpp */; };
@@ -40,6 +41,8 @@
 		4FB122C2250D886B005278AC /* synAckJob.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = synAckJob.hpp; sourceTree = "<group>"; };
 		4FB122C4251717D5005278AC /* clusterInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = clusterInfo.cpp; sourceTree = "<group>"; };
 		4FB122C5251717D5005278AC /* clusterInfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = clusterInfo.hpp; sourceTree = "<group>"; };
+		4FB122C7251FDCAE005278AC /* membershipJob.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = membershipJob.cpp; sourceTree = "<group>"; };
+		4FB122C8251FDCAE005278AC /* membershipJob.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = membershipJob.hpp; sourceTree = "<group>"; };
 		4FCA057724E0627C00BAD4A1 /* logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
 		4FCA057824E0627C00BAD4A1 /* logger.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = logger.hpp; sourceTree = "<group>"; };
 		4FCA058124E9ADFE00BAD4A1 /* message.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = message.hpp; sourceTree = "<group>"; };
@@ -119,6 +122,8 @@
 				4FB122C2250D886B005278AC /* synAckJob.hpp */,
 				4FB122C4251717D5005278AC /* clusterInfo.cpp */,
 				4FB122C5251717D5005278AC /* clusterInfo.hpp */,
+				4FB122C7251FDCAE005278AC /* membershipJob.cpp */,
+				4FB122C8251FDCAE005278AC /* membershipJob.hpp */,
 			);
 			path = Gossip;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FFC812524F4C8B10025F816 /* synJob.cpp in Sources */,
+				4FB122C9251FDCAE005278AC /* membershipJob.cpp in Sources */,
 				4FCA058524E9AFD200BAD4A1 /* messageGossip.cpp in Sources */,
 				4FD2789624D3A72800886310 /* serverJob.cpp in Sources */,
 				4FD2789924D5E1BD00886310 /* threadPool.cpp in Sources */,

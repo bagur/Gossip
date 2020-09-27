@@ -96,6 +96,7 @@ serverJob::processJob() {
         }
         
         log_trace(data);
+        //std::cout << data << std::endl;
         log_verbose(data);
         json j  = json::parse(data);
         log_verbose(j.dump());

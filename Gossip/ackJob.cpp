@@ -63,8 +63,10 @@ ackJob::processJob() {
         }
         
         cluster->processNodesList(syn->gossip_info_list, new_list_peer);
-        if (!sendAckMessage(cluster, new_list_peer))
+        if (!sendAckMessage(cluster, new_list_peer)) {
+            cluster->addToNodesDownMap(syn->getSenderKey());
             return false;
+        }
         return true;
     }
 }
